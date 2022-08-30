@@ -5,7 +5,7 @@ SQLAlchemy==1.4.40
 asyncpg==0.26.0
 passlib==1.7.4
 python-jose==3.3.0
-pydantic[dotenv]==1.9.2
+pydantic[dotenv]==1.10.0
 bcrypt==3.2.2
 cryptography==37.0.4
 email-validator==1.2.1
