@@ -22,7 +22,7 @@ async def get_all(db: AsyncSession, model):
     return query.scalars().all()
 
 
-async def get_specific_by_id(db: AsyncSession, model, id: int):
+async def get_specific_by_id(db: AsyncSession, model, id: int, exception: bool = True):
     """
     Get an entry by id
     example:
@@ -33,13 +33,17 @@ async def get_specific_by_id(db: AsyncSession, model, id: int):
 
     if result is not None:
         return result
-    else:
+
+    if exception:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"{model.__name__} not found"
         )
+    return None
 
 
-async def get_specific(db: AsyncSession, model, filter_lst: list):
+async def get_specific(
+    db: AsyncSession, model, filter_lst: list, exception: bool = True
+):
     """
     Get an entry by id
     example:
@@ -50,10 +54,12 @@ async def get_specific(db: AsyncSession, model, filter_lst: list):
 
     if result is not None:
         return result
-    else:
+
+    if exception:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"{model.__name__} not found"
         )
+    return None
 
 
 async def delete_by_id(db, model, id: int):
@@ -79,7 +85,9 @@ async def delete_by_id(db, model, id: int):
     }
 
 
-async def check_if_exists(db: AsyncSession, model, filter_lst: list):
+async def check_if_exists(
+    db: AsyncSession, model, filter_lst: list, exception: bool = True
+):
     """
     Check if an entry exists in the database
     example:
@@ -90,10 +98,12 @@ async def check_if_exists(db: AsyncSession, model, filter_lst: list):
     result = query.scalars().first()
 
     if result:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"{model.__name__} already exists",
-        )
+        if exception:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"{model.__name__} already exists",
+            )
+        return True
     return False
 
 

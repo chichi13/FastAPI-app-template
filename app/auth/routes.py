@@ -85,7 +85,7 @@ async def login(
 
 
 @router.post(
-    "/refresh_access_token/{token}",
+    "/refresh_access_token",
     status_code=status.HTTP_201_CREATED,
     response_model=Token,
     description="Refresh an access token using a refresh token",
@@ -102,9 +102,7 @@ async def refresh_access_token(
     return tokens
 
 
-@router.post(
-    "/logout", status_code=status.HTTP_200_OK, response_model=Message
-)
+@router.post("/logout", status_code=status.HTTP_200_OK, response_model=Message)
 async def logout() -> dict:
     # Remove access_token/refresh_token from the frontend
     return {"msg": strings.LOGGED_OUT}

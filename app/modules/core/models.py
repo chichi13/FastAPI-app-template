@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, String
+from sqlalchemy import JSON, Boolean, Column, DateTime, String
 from sqlalchemy.orm import relationship
 
 from app.db.base import Base
@@ -24,7 +24,7 @@ class User(Base, BaseFeaturesMixin):
 
     username = Column(String(30), unique=True, index=True, nullable=False)
     email = Column(String(255), unique=True, index=True, nullable=False)
-    password = Column(String(100), nullable=False)
+    password = Column(String(100), nullable=True)
     is_active = Column(Boolean, default=False)
 
     # Relationship
@@ -45,6 +45,25 @@ class User(Base, BaseFeaturesMixin):
         uselist=False,
         lazy=False,
     )
+    auth_methods = relationship(
+        "AuthMethod",
+        back_populates="user",
+        cascade="all,delete",
+        uselist=True,
+        lazy=False,
+    )
+
+
+class AuthMethod(Base, BaseFeaturesMixin):
+    __tablename__ = "cre_auth_method"
+
+    user_id = reference_col(User.__tablename__)
+    provider = Column(String(50), nullable=False)
+    provider_user_id = Column(String(255), nullable=False)
+    provider_user_data = Column(JSON, nullable=True)
+
+    # Relationship
+    user = relationship("User", back_populates="auth_methods", lazy=False)
 
 
 class EmailVerification(Base, BaseFeaturesMixin):
