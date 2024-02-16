@@ -5,7 +5,7 @@ SQLAlchemy==2.0.25
 asyncpg==0.29.0
 passlib==1.7.4
 python-jose==3.3.0
-pydantic-settings==2.1.0
+pydantic-settings==2.2.0
 pydantic==2.5.3
 bcrypt==4.1.2
 cryptography==42.0.1
