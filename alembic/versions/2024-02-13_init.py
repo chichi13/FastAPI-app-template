@@ -2,7 +2,7 @@
 
 Revision ID: 0
 Revises: 
-Create Date: 2024-01-10 14:30:41.655944
+Create Date: 2024-02-13 16:09:38.732505
 
 """
 import sqlalchemy as sa
@@ -39,7 +39,7 @@ def upgrade():
     op.create_table('cre_user',
     sa.Column('username', sa.String(length=30), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
-    sa.Column('password', sa.String(length=100), nullable=False),
+    sa.Column('password', sa.String(length=100), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
@@ -48,6 +48,17 @@ def upgrade():
     )
     op.create_index(op.f('cre_user_email_idx'), 'cre_user', ['email'], unique=True)
     op.create_index(op.f('cre_user_username_idx'), 'cre_user', ['username'], unique=True)
+    op.create_table('cre_auth_method',
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('provider', sa.String(length=50), nullable=False),
+    sa.Column('provider_user_id', sa.String(length=255), nullable=False),
+    sa.Column('provider_user_data', sa.JSON(), nullable=True),
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(), server_default=sa.text('now()'), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['cre_user.id'], name=op.f('cre_auth_method_user_id_fkey')),
+    sa.PrimaryKeyConstraint('id', name=op.f('cre_auth_method_pkey'))
+    )
     op.create_table('cre_email_verification',
     sa.Column('token', sa.String(length=255), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -96,6 +107,7 @@ def downgrade():
     op.drop_table('cre_profile')
     op.drop_index(op.f('cre_email_verification_token_idx'), table_name='cre_email_verification')
     op.drop_table('cre_email_verification')
+    op.drop_table('cre_auth_method')
     op.drop_index(op.f('cre_user_username_idx'), table_name='cre_user')
     op.drop_index(op.f('cre_user_email_idx'), table_name='cre_user')
     op.drop_table('cre_user')

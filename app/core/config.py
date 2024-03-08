@@ -1,8 +1,15 @@
 from enum import Enum
-from typing import List
+from typing import Any, List
 
+from pydantic import model_validator
 from pydantic.networks import AnyHttpUrl
 from pydantic_settings import BaseSettings
+
+DEFAULT_DATABASE_USER = "app"
+DEFAULT_DATABASE_PASSWORD = "password"
+DEFAULT_DATABASE_URL = "127.0.0.1"
+DEFAULT_DATABASE_NAME = "app"
+DEFAULT_DATABASE_PORT = 5432
 
 
 class AppEnvironment(str, Enum):
@@ -19,7 +26,8 @@ class Config(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     APP_VERSION: str = "Unversioned API"
-    FASTAPI_ENV: AppEnvironment = AppEnvironment.PRODUCTION
+    APP_BASE_URL: str = "http://localhost:8000"
+    ENV: AppEnvironment = AppEnvironment.PRODUCTION
 
     UVICORN_HOST: str = "0.0.0.0"
     UVICORN_PORT: int = 8000
@@ -27,13 +35,15 @@ class Config(BaseSettings):
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
     PROJECT_NAME: str | None = "FastAPI app template"
 
-    DATABASE_USER: str = "app"
-    DATABASE_PASSWORD: str = "password"
-    DATABASE_URL: str = "127.0.0.1"
-    DATABASE_NAME: str = "app"
-    DATABASE_PORT: int = 5432
+    DATABASE_USER: str = DEFAULT_DATABASE_USER
+    DATABASE_PASSWORD: str = DEFAULT_DATABASE_PASSWORD
+    DATABASE_URL: str = DEFAULT_DATABASE_URL
+    DATABASE_NAME: str = DEFAULT_DATABASE_NAME
+    DATABASE_PORT: int = DEFAULT_DATABASE_PORT
     DATABASE_POOL_SIZE: int = 5
     DATABASE_MAX_OVERFLOW: int = 10
+    # Use SQLALCHEMY_DATABASE_URI to override all the other database settings
+    SQLALCHEMY_DATABASE_URI: str | None = None
 
     REDIS_CONNECTION: bool = False
     REDIS_URL: str = "localhost"
@@ -63,11 +73,31 @@ class Config(BaseSettings):
     JWT_ACCESS_TOKEN_KEY: str
     JWT_REFRESH_TOKEN_KEY: str
 
+    # SSO
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+
+    @model_validator(mode="before")
+    def build_test_database_url(cls, values: dict[str, Any]) -> dict[str, Any]:
+        if values.get("ENV") == AppEnvironment.TESTING:
+            values["SQLALCHEMY_DATABASE_URI"] = "sqlite+aiosqlite:///testing.db"
+        else:
+            values["SQLALCHEMY_DATABASE_URI"] = values.get(
+                "SQLALCHEMY_DATABASE_URI"
+            ) or "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
+                values.get("DATABASE_USER", DEFAULT_DATABASE_USER),
+                values.get("DATABASE_PASSWORD", DEFAULT_DATABASE_PASSWORD),
+                values.get("DATABASE_URL", DEFAULT_DATABASE_URL),
+                values.get("DATABASE_PORT", DEFAULT_DATABASE_PORT),
+                values.get("DATABASE_NAME", DEFAULT_DATABASE_NAME),
+            )
+        return values
+
     def is_dev(self) -> bool:
-        return self.FASTAPI_ENV == AppEnvironment.DEV
+        return self.ENV == AppEnvironment.DEV
 
     def is_prod(self) -> bool:
-        return self.FASTAPI_ENV == AppEnvironment.PRODUCTION
+        return self.ENV == AppEnvironment.PRODUCTION
 
 
 settings = Config(_env_file=".env", _env_file_encoding="utf-8")

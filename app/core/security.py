@@ -21,7 +21,7 @@ from app.services import strings
 from app.services.storage import storage
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/auth/token",
+    tokenUrl=f"{settings.API_V1_STR}/auth/login",
 )
 
 
