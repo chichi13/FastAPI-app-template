@@ -8,7 +8,7 @@ python-jose==3.3.0
 pydantic-settings==2.1.0
 pydantic==2.6.1
 bcrypt==4.1.2
-cryptography==42.0.1
+cryptography==42.0.4
 email-validator==2.1.0.post1
 fastapi_pagination==0.12.14
 redis==5.0.1
