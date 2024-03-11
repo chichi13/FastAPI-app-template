@@ -11,7 +11,7 @@ bcrypt==4.1.2
 cryptography==42.0.5
 email-validator==2.1.1
 fastapi_pagination==0.12.19
-redis==5.0.2
+redis==5.0.3
 psycopg2==2.9.9
 sentry-sdk==1.41.0
 fastapi-sso==0.12.1
