@@ -6,7 +6,7 @@ asyncpg==0.29.0
 passlib==1.7.4
 python-jose==3.3.0
 pydantic-settings==2.2.1
-pydantic==2.6.3
+pydantic==2.7.0
 bcrypt==4.1.2
 cryptography==42.0.5
 email-validator==2.1.1
