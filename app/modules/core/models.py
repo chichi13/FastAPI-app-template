@@ -31,26 +31,26 @@ class User(Base, BaseFeaturesMixin):
     profile = relationship(
         "Profile",
         back_populates="user",
-        cascade="all,delete",
+        cascade="all, delete-orphan",
         uselist=False,
-        lazy=False,
+        lazy="noload",
     )
     roles = relationship(
-        "Role", secondary=user_role, back_populates="users", lazy=False
+        "Role", secondary=user_role, back_populates="users", lazy="noload"
     )
     email_verification = relationship(
         "EmailVerification",
         back_populates="user",
-        cascade="all,delete",
+        cascade="all, delete-orphan",
         uselist=False,
-        lazy=False,
+        lazy="noload",
     )
     auth_methods = relationship(
         "AuthMethod",
         back_populates="user",
-        cascade="all,delete",
+        cascade="all, delete-orphan",
         uselist=True,
-        lazy=False,
+        lazy="noload",
     )
 
 
@@ -63,7 +63,11 @@ class AuthMethod(Base, BaseFeaturesMixin):
     provider_user_data = Column(JSON, nullable=True)
 
     # Relationship
-    user = relationship("User", back_populates="auth_methods", lazy=False)
+    user = relationship(
+        "User",
+        back_populates="auth_methods",
+        lazy="noload",
+    )
 
 
 class EmailVerification(Base, BaseFeaturesMixin):
@@ -74,7 +78,7 @@ class EmailVerification(Base, BaseFeaturesMixin):
     expires_at = Column(DateTime, nullable=False)
 
     # Relationship
-    user = relationship("User", back_populates="email_verification", lazy=False)
+    user = relationship("User", back_populates="email_verification", lazy="noload")
 
 
 class Profile(Base, BaseFeaturesMixin):
@@ -88,7 +92,7 @@ class Profile(Base, BaseFeaturesMixin):
     user_id = reference_col(User.__tablename__)
 
     # Relationship
-    user = relationship("User", back_populates="profile", lazy=False)
+    user = relationship("User", back_populates="profile", lazy="noload")
 
 
 class Role(Base, BaseFeaturesMixin):
@@ -99,10 +103,10 @@ class Role(Base, BaseFeaturesMixin):
 
     # Relationship
     users = relationship(
-        "User", secondary=user_role, back_populates="roles", lazy=False
+        "User", secondary=user_role, back_populates="roles", lazy="noload"
     )
     permissions = relationship(
-        "Permission", secondary=role_permission, back_populates="roles", lazy=False
+        "Permission", secondary=role_permission, back_populates="roles", lazy="noload"
     )
 
 
@@ -114,5 +118,5 @@ class Permission(Base, BaseFeaturesMixin):
 
     # Relationship
     roles = relationship(
-        "Role", secondary=role_permission, back_populates="permissions", lazy=False
+        "Role", secondary=role_permission, back_populates="permissions", lazy="noload"
     )

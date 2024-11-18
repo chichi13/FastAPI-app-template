@@ -22,9 +22,9 @@ class RefreshToken(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: constr(
-        to_lower=True, min_length=4, max_length=20, strip_whitespace=True
-    ) | None = None
+    username: (
+        constr(to_lower=True, min_length=4, max_length=20, strip_whitespace=True) | None
+    ) = None
     scopes: list[str] = []
 
 

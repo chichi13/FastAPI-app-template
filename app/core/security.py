@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 from typing import Union
 
 import bcrypt
+import jwt
 from fastapi import Depends, HTTPException, Query
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
-import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from starlette import status

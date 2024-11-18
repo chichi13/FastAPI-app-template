@@ -42,9 +42,9 @@ class UserInDBProfile(UserInDBBase):
 
 
 class UserUpdate(UserInDBBase):
-    username: constr(
-        to_lower=True, min_length=4, max_length=30, strip_whitespace=True
-    ) | None = None
+    username: (
+        constr(to_lower=True, min_length=4, max_length=30, strip_whitespace=True) | None
+    ) = None
     email: EmailStr | None = None
     password: constr(min_length=8, max_length=60) | None = None
     is_active: bool | None = None
