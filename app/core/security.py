@@ -5,7 +5,7 @@ from typing import Union
 import bcrypt
 from fastapi import Depends, HTTPException, Query
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
-from jose import JWTError, jwt
+import jwt
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from starlette import status
@@ -168,7 +168,7 @@ async def check_jwt(
 
         token_scopes = payload.get("scopes", [])
         token_data = TokenData(username=username, scopes=token_scopes)
-    except JWTError:
+    except jwt.PyJWTError:
         raise credentials_exception
 
     user = await get_user_by_username(db, username=token_data.username)
