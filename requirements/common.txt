@@ -1,5 +1,5 @@
 fastapi==0.115.5
-uvicorn==0.32.0
+uvicorn==0.34.0
 python-multipart==0.0.17
 SQLAlchemy==2.0.36
 asyncpg==0.30.0
