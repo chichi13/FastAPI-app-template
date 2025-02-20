@@ -14,7 +14,7 @@ from app.core.query_factory import (
     update_entry,
 )
 from app.core.schema import DefaultResponse
-from app.core.security import get_current_active_user
+from app.utils.security import get_current_active_user
 from app.db.deps import get_db
 from app.modules.core.crud import get_user_permission, get_user_roles
 from app.modules.core.models import Permission, Role, User

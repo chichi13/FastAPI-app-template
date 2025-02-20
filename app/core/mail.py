@@ -4,7 +4,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from mailjet_rest import Client
 
 from app.core.config import settings
-from app.core.logger import logger
+from app.utils.logger import logger
 
 
 def render_template(template_path, context):

@@ -12,7 +12,7 @@ from starlette import status
 
 from app.auth.schema import TokenData
 from app.core.config import settings
-from app.core.logger import logger
+from app.utils.logger import logger
 from app.core.query_factory import check_if_exists
 from app.db.deps import get_db
 from app.modules.admin.crud import get_user_by_username

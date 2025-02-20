@@ -8,7 +8,7 @@ from app.auth.schema import Message, RefreshToken, Token
 from app.core.config import settings
 from app.core.mail import render_template, send_email
 from app.core.query_factory import check_if_exists, create_entry, get_specific
-from app.core.security import (
+from app.utils.security import (
     add_token_to_blacklist,
     check_user_auth,
     generate_access_refresh_token,

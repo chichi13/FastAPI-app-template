@@ -6,7 +6,7 @@ from app.auth.schema import Google, GoogleToken, Token
 from app.auth.sso.google_utils import refresh_access_token
 from app.core.config import settings
 from app.core.query_factory import create_entry, get_specific
-from app.core.security import generate_access_refresh_token
+from app.utils.security import generate_access_refresh_token
 from app.db.deps import get_db
 from app.modules.core.models import AuthMethod, User
 from app.services import strings

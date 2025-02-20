@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Security, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.query_factory import update_entry
-from app.core.security import get_current_active_user
+from app.utils.security import get_current_active_user
 from app.db.deps import get_db
 from app.modules.core.models import Profile
 from app.modules.users.schema import UserProfile, UserProfileBase, UserSchemaProfile

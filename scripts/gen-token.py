@@ -6,7 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from datetime import timedelta
 
-from app.core.security import create_jwt_token
+from app.utils.security import create_jwt_token
 
 if __name__ == "__main__":
     access_token_expires = timedelta(days=1)
