@@ -13,7 +13,7 @@ fastapi_pagination==0.12.34
 redis==5.2.1
 psycopg2==2.9.10
 sentry-sdk==2.22.0
-fastapi-sso==0.17.0
+fastapi-sso==0.18.0
 mailjet-rest==1.3.4
 pyjwt==2.10.1
 alembic==1.14.1
