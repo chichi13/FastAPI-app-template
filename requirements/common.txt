@@ -1,6 +1,6 @@
 fastapi==0.115.8
 uvicorn==0.34.0
-python-multipart==0.0.20
+python-multipart==0.0.22
 SQLAlchemy==2.0.38
 asyncpg==0.30.0
 passlib==1.7.4
